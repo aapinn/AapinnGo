@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  // Jika sedang develop pakai localhost, jika sudah deploy pakai URL asli
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000",
+  // Tambahkan /api di ujungnya agar tidak perlu tulis berulang kali
+  baseURL: (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000") + "/api",
 });
 
 // Tambahkan token ke setiap request otomatis

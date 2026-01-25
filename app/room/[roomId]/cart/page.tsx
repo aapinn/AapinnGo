@@ -61,8 +61,7 @@ export default function CartPage() {
       };
 
       // 4. Kirim ke Backend
-      await api.post("http://localhost:5000/api/orders", orderPayload);
-
+      await api.post(`/orders`, orderPayload);
       // 5. Bersihkan Keranjang
       localStorage.removeItem("cart");
       window.dispatchEvent(new Event("cart-updated"));

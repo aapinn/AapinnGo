@@ -27,11 +27,12 @@ export default function LoginPage() {
     // toast.success("Selamat datang!");
   };
 
-  const login = async () => {
+const login = async () => {
     if (!username || !password) return alert("Isi username dan password");
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:5000/api/auth/login", { 
+      // GANTI localhost menjadi process.env
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, { 
         username, 
         password 
       });
@@ -53,7 +54,7 @@ export default function LoginPage() {
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
 
-      const res = await axios.post("http://localhost:5000/api/auth/google-login", { 
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/google-login`, { 
         idToken 
       });
 
