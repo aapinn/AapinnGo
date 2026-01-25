@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
 import toast, { Toaster } from "react-hot-toast";
 import ProductCard from "./components/ProductCard";
@@ -9,6 +8,8 @@ import AddProductForm from "./components/AddProductForm";
 import { NavbarNav } from "../components/NavbarNav";
 import AuthGuard from "../login/components/AuthGuard";
 import { useRoom } from "../components/RoomContext";
+import api from "@/lib/axios";
+
 
 export interface Product {
   _id: string;
@@ -16,8 +17,6 @@ export interface Product {
   variants: string[];
   active: boolean;
 }
-
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 
 export default function ProductPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -49,7 +48,7 @@ export default function ProductPage() {
 
     setLoading(true);
     try {
-      const res = await axios.get(`${API_URL}/products`, {
+      const res = await api.get(`/products`, {
         headers: { Authorization: `Bearer ${admin.token}` }
       });
       setProducts(res.data || []);
@@ -71,7 +70,7 @@ export default function ProductPage() {
 
     try {
       const activeOnly = updatedProducts.filter(p => p.active);
-      await axios.post(`${API_URL}/rooms/${targetRoomId}/products`, 
+      await api.post(`/rooms/${targetRoomId}/products`, 
         { products: activeOnly }, 
         { headers: { Authorization: `Bearer ${admin.token}` } }
       );
@@ -111,13 +110,13 @@ export default function ProductPage() {
       if (roomActive) {
         const idToClose = currentRoomId || localStorage.getItem("activeRoomId");
         if (idToClose) {
-          await axios.patch(`${API_URL}/rooms/end/${idToClose}`, {}, { headers });
+          await api.patch(`/rooms/end/${idToClose}`, {}, { headers });
         }
         setRoomId(null);
         localStorage.removeItem("activeRoomId");
         toast.success("Sesi penjualan berakhir", { icon: "🛑" });
       } else {
-        const res = await axios.post(`${API_URL}/rooms/start`, {}, { headers });
+        const res = await api.post(`/rooms/start`, {}, { headers });
         const newRoomId = res.data.roomId;
         if (newRoomId) {
           setRoomId(newRoomId);
@@ -139,7 +138,7 @@ export default function ProductPage() {
     if (!admin) return;
 
     try {
-      const res = await axios.post(`${API_URL}/products`, productData, { 
+      const res = await api.post(`}/products`, productData, { 
         headers: { Authorization: `Bearer ${admin.token}` } 
       });
       
@@ -171,7 +170,7 @@ export default function ProductPage() {
     setProducts(updatedList);
 
     try {
-      await axios.patch(`${API_URL}/products/${id}`, 
+      await api.patch(`/products/${id}`, 
         { active: newStatus }, 
         { headers: { Authorization: `Bearer ${admin.token}` } }
       );
@@ -206,7 +205,7 @@ export default function ProductPage() {
 
     const tId = toast.loading("Menghapus...");
     try {
-      await axios.delete(`${API_URL}/products/${id}`, {
+      await api.delete(`/products/${id}`, {
         headers: { Authorization: `Bearer ${admin.token}` }
       });
 

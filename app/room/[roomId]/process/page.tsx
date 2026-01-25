@@ -19,7 +19,7 @@ import api from "@/lib/axios";
 import toast, { Toaster } from "react-hot-toast";
 
 // Inisialisasi Socket (Sesuaikan URL dengan backend kamu)
-const socket = io("http://localhost:5000");
+const socket = io(process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000");
 
 interface OrderItem {
   name: string;

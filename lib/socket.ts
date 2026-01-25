@@ -1,7 +1,11 @@
-import { io, Socket } from "socket.io-client";
+import { io } from "socket.io-client";
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5000";
+// Ambil URL dari environment variable Vercel
+const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-export const socket: Socket = io(SOCKET_URL, {
-  autoConnect: false,
+const socket = io(SOCKET_URL, {
+  transports: ["websocket"], // Memaksa pakai websocket agar lebih cepat di Railway
+  withCredentials: true,
 });
+
+export default socket;

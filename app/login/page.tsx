@@ -3,7 +3,7 @@ import { useState } from "react";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import api from "@/lib/axios";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -32,7 +32,7 @@ const login = async () => {
     try {
       setLoading(true);
       // GANTI localhost menjadi process.env
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, { 
+      const res = await api.post(`/api/auth/login`, { 
         username, 
         password 
       });
@@ -54,7 +54,7 @@ const login = async () => {
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
 
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/google-login`, { 
+      const res = await api.post(`/api/auth/google-login`, { 
         idToken 
       });
 
