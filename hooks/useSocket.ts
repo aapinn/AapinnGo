@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { socket } from "@/lib/socket";
+import socket from "@/lib/socket";
 
 export const useSocket = () => {
   useEffect(() => {
@@ -13,4 +13,6 @@ export const useSocket = () => {
       socket.disconnect();
     };
   }, []);
+
+  return socket
 };
