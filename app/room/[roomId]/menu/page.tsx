@@ -42,7 +42,7 @@ export default function RoomMenuPage() {
     if (!roomIdStr) return;
     try {
       setLoading(true);
-      const res = await api.get(`http://localhost:5000/api/rooms/${roomIdStr}`);
+      const res = await api.get(`/rooms/${roomIdStr}`);
       const data = res.data.products || [];
       setProducts(data);
 

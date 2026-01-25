@@ -43,7 +43,7 @@ export default function JoinRoomPage() {
 
     try {
       const formattedRoomId = roomId.toUpperCase();
-      const res = await fetch(`http://localhost:5000/api/rooms/${formattedRoomId}`);
+      const res = await fetch(`/rooms/${formattedRoomId}`);
       if (!res.ok) throw new Error("KODE ROOM SALAH");
 
       const data = await res.json();
