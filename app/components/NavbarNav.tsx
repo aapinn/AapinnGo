@@ -26,13 +26,20 @@ export function NavbarNav() {
   
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
+    setMounted(true);
+    // 2. AMBIL DATA LOCALSTORAGE DI DALAM EFFECT
+    const savedId = localStorage.getItem("activeRoomId");
+    setActiveId(roomId || savedId);
+
     const unsub = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
     return () => unsub();
-  }, []);
+  }, [roomId]); // Re-run jika roomId dari context berubah
 
 const handleLogout = async () => {
   try {
@@ -65,23 +72,21 @@ const handleLogout = async () => {
 
   const isAdmin = !!user;
   const isCustomer = !!roomId && !isAdmin;
-  const activeId = roomId || (typeof window !== 'undefined' ? localStorage.getItem("activeRoomId") : null);
 
   // TAB KHUSUS ADMIN (Disesuaikan)
   // TAB KHUSUS ADMIN
-  const adminTabs = [
+const adminTabs = mounted && activeId ? [
     { name: "Products", link: `/products` },
-    // Tambahkan "/" sebelum newOrder agar link valid
-    { name: "New Order", link: activeId ? `/room/${activeId}/newOrder` : "/room/newOrder" }, 
-    { name: "Process", link: activeId ? `/room/${activeId}/process` : "#" },
-    { name: "Finish", link: activeId ? `/room/${activeId}/finish` : "#" },
-  ];
+    { name: "New Order", link: `/room/${activeId}/newOrder` }, 
+    { name: "Process", link: `/room/${activeId}/process` },
+    { name: "Finish", link: `/room/${activeId}/finish` },
+  ] : [];
 
   // TAB KHUSUS CUSTOMER
-  const customerTabs = [
-    { name: "Menu", link: activeId ? `/room/${activeId}/menu` : "#" },
-    { name: "My Orders", link: activeId ? `/room/${activeId}/order` : "#" },
-  ];
+const customerTabs = mounted && activeId ? [
+    { name: "Menu", link: `/room/${activeId}/menu` },
+    { name: "My Orders", link: `/room/${activeId}/order` },
+  ] : [];
 
   // Pilih items berdasarkan siapa yang sedang akses
   const activeNavItems = isAdmin ? adminTabs : (isCustomer ? customerTabs : []);
@@ -93,7 +98,7 @@ const handleLogout = async () => {
           <NavbarLogo />
 
           {/* Render Tab Links */}
-          {activeNavItems.length > 0 && (
+          {mounted && activeNavItems.length > 0 && (
             <NavItems
               items={activeNavItems}
               onItemClick={(link) => router.push(link)}
@@ -101,31 +106,33 @@ const handleLogout = async () => {
           )}
 
           <div className="flex items-center gap-3">
-            {!user ? (
+            {mounted && !user ? (
               <>
-                <NavbarButton as={Link} href="/login" variant="secondary" className="text-[10px] uppercase font-bold tracking-wider">
+                <NavbarButton href="/login" variant="secondary">
                   Login Admin
                 </NavbarButton>
                 {!roomId && (
-                  <NavbarButton as={Link} href="/join" variant="primary" className="text-[10px] uppercase font-bold tracking-wider">
+                  <NavbarButton href="/join" variant="primary">
                     Join Room
                   </NavbarButton>
                 )}
               </>
             ) : (
-              <NavbarButton variant="secondary" onClick={handleLogout} className="text-[10px] uppercase font-bold tracking-wider">
-                Logout ({user.displayName?.split(" ")[0] || "Admin"})
-              </NavbarButton>
+              mounted && user && (
+                <NavbarButton variant="secondary" onClick={handleLogout}>
+                  Logout ({user.displayName?.split(" ")[0] || "Admin"})
+                </NavbarButton>
+              )
             )}
             
             {/* Status Room Aktif */}
-            {roomId && (
-               <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-slate-50 rounded-full border border-slate-100">
-                  <span className={`w-1.5 h-1.5 rounded-full ${isAdmin ? "bg-amber-400" : "bg-emerald-500 animate-pulse"}`} />
-                  <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
-                    ID: {roomId}
-                  </span>
-               </div>
+            {mounted && roomId && (
+              <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-slate-50 rounded-full border border-slate-100">
+                <span className={`w-1.5 h-1.5 rounded-full ${isAdmin ? "bg-amber-400" : "bg-emerald-500 animate-pulse"}`} />
+                <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
+                  ID: {roomId}
+                </span>
+              </div>
             )}
           </div>
         </NavBody>
