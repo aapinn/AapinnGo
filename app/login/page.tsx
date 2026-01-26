@@ -54,7 +54,7 @@ const login = async () => {
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
 
-      const res = await api.post(`/api/auth/google-login`, { 
+      const res = await api.post(`/auth/google-login`, { 
         idToken 
       });
 

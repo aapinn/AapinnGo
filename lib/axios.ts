@@ -1,9 +1,12 @@
 import axios from "axios";
 
 const api = axios.create({
-  // Tambahkan /api di ujungnya agar tidak perlu tulis berulang kali
-  baseURL: process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/api` : "http://localhost:5000",
-})
+  // Tambahkan /api di akhir URL
+  baseURL: process.env.NEXT_PUBLIC_API_URL 
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api` 
+    : "http://localhost:5000/api",
+  withCredentials: true,
+});
 
 // Tambahkan token ke setiap request otomatis
 api.interceptors.request.use((config) => {

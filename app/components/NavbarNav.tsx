@@ -60,7 +60,7 @@ const handleLogout = async () => {
     // api.defaults.headers.common["Authorization"] = "";
 
     // E. Pindah ke halaman login (Full Refresh)
-    window.location.href = "/login";
+    window.location.href = "/";
     
   } catch (err) {
     console.error("Gagal logout:", err);

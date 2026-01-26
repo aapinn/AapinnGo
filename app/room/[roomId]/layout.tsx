@@ -19,23 +19,29 @@ export default function RoomLayout({ children }: { children: React.ReactNode }) 
   // 🛡️ ROLE CHECK: Jika ada session NextAuth (Google/Admin), maka dia Admin
   const isAdmin = !!session;
 
-  useEffect(() => {
-    const verifyAccess = () => {
-      const token = localStorage.getItem("token");
+useEffect(() => {
+  const verifyAccess = () => {
+    const token = localStorage.getItem("token");
+    
+    // TAMBAHKAN /cart DI SINI
+    // Cek apakah URL berakhir dengan /menu atau /cart atau /order
+    const isPublicPage = 
+      pathname.endsWith("/menu") || 
+      pathname.endsWith("/cart") || 
+      pathname.endsWith("/order");
 
-      // Jika status NextAuth sudah selesai loading
-      if (status !== "loading") {
-        // Jika tidak ada token (Login Manual) DAN tidak ada session (Login Google)
-        if (!token && !session) {
-          router.push("/login");
-        } else {
-          setIsVerifying(false);
-        }
+    if (status !== "loading") {
+      // Jika BUKAN halaman publik dan tidak ada session admin, baru redirect
+      if (!isPublicPage && !token && !session) {
+        router.push("/login");
+      } else {
+        setIsVerifying(false);
       }
-    };
+    }
+  };
 
-    verifyAccess();
-  }, [status, session, router]);
+  verifyAccess();
+}, [status, session, router, pathname]);
 
   // Loading State agar tidak flicker saat cek akses
   if (status === "loading" || isVerifying) {

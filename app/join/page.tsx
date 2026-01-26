@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import api from "@/lib/axios";
 
 export default function JoinRoomPage() {
   const router = useRouter();
@@ -36,27 +37,36 @@ export default function JoinRoomPage() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [step, name, wa, roomId]);
 
-  const joinRoom = async () => {
-    setLoading(true);
-    setError("");
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+ const joinRoom = async () => {
+  setLoading(true);
+  setError("");
+  
+  // Delay buatan (opsional, bisa dihapus jika ingin instan)
+  await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    try {
-      const formattedRoomId = roomId.toUpperCase();
-      const res = await fetch(`/rooms/${formattedRoomId}`);
-      if (!res.ok) throw new Error("KODE ROOM SALAH");
+  try {
+    const formattedRoomId = roomId.toUpperCase().trim();
+    
+    // 2. Ganti fetch bawaan dengan instance axios 'api'
+    const res = await api.get(`/rooms/${formattedRoomId}`);
+    
+    // Axios menyimpan data langsung di properti .data
+    const data = res.data;
 
-      const data = await res.json();
-      localStorage.setItem("userName", name);
-      localStorage.setItem("userPhone", wa);
-      localStorage.setItem("activeRoomId", data.roomId);
-      
-      router.push(`/room/${data.roomId}/menu`);
-    } catch (err: any) {
-      setError(err.message);
-      setLoading(false); 
-    }
-  };
+    // 3. Simpan identitas pembeli
+    localStorage.setItem("userName", name);
+    localStorage.setItem("userPhone", wa);
+    localStorage.setItem("activeRoomId", data.roomId);
+    
+    // 4. Redirect
+    router.push(`/room/${data.roomId}/menu`);
+  } catch (err: any) {
+    // Tangani pesan error dari backend
+    const errMsg = err.response?.data?.message || "KODE ROOM SALAH ATAU TUTUP";
+    setError(errMsg.toUpperCase());
+    setLoading(false); 
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-6 font-sans antialiased">

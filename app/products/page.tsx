@@ -66,13 +66,14 @@ export default function ProductPage() {
   // 3. Sinkronisasi ke Room
   const syncToRoom = async (updatedProducts: Product[], targetRoomId: string) => {
     const admin = getAdminData();
+    console.log("Frontend Sync Debug:", { targetRoomId, adminUid: admin?.uid });
+    const cleanRoomId = targetRoomId?.trim().toUpperCase();
     if (!admin || !targetRoomId) return;
 
     try {
       const activeOnly = updatedProducts.filter(p => p.active);
-      await api.post(`/rooms/${targetRoomId}/products`, 
+      await api.post(`/rooms/${cleanRoomId}/products`, 
         { products: activeOnly }, 
-        { headers: { Authorization: `Bearer ${admin.token}` } }
       );
       console.log("Room synchronized");
     } catch (err: any) {
@@ -138,7 +139,7 @@ export default function ProductPage() {
     if (!admin) return;
 
     try {
-      const res = await api.post(`}/products`, productData, { 
+      const res = await api.post(`/products`, productData, { 
         headers: { Authorization: `Bearer ${admin.token}` } 
       });
       
