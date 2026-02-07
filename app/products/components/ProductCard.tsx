@@ -27,8 +27,8 @@ export default function ProductCard({ product, onToggleActive, togglingId, onDel
 
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h2 className="font-black uppercase italic tracking-tighter text-lg">{product.name}</h2>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Master Product</p>
+          <h2 className="text-lg font-sans font-semibold">{product.name}</h2>
+          <p className="text-[10px] text-slate-400 ">Master Product</p>
         </div>
 
         {/* Toggle Switch */}
@@ -48,7 +48,7 @@ export default function ProductCard({ product, onToggleActive, togglingId, onDel
 
       {product.variants?.length ? (
         <div className="space-y-1">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Varian Tersedia:</p>
+          <p className="text-[10px] font-black text-slate-400">Varian Tersedia:</p>
           <div className="flex flex-wrap gap-2">
             {product.variants.map((v: string) => (
               <span key={v} className="px-3 py-1 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-600">

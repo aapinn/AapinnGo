@@ -71,9 +71,9 @@ const login = async () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow">
-        <h1 className="mb-6 text-center text-2xl font-semibold">
-          Login
+      <div className="w-full max-w-sm rounded-xl p-6">
+        <h1 className="mb-6 text-2xl font-semibold font-sans">
+          Sign in to Apin-go
         </h1>
 
         <input
@@ -81,7 +81,7 @@ const login = async () => {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="mb-3 w-full rounded-lg border px-4 py-2"
+          className="mb-3 w-full rounded-full border px-4 py-2"
         />
 
         <input
@@ -89,13 +89,13 @@ const login = async () => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mb-4 w-full rounded-lg border px-4 py-2"
+          className="mb-4 w-full rounded-full border px-4 py-2"
         />
 
         <button
           onClick={login}
           disabled={loading}
-          className="mb-4 w-full rounded-lg bg-black py-2 text-white disabled:opacity-60"
+          className="mb-4 w-full rounded-full bg-black py-2 text-white disabled:opacity-60"
         >
           {loading ? "Loading..." : "Login"}
         </button>
@@ -107,7 +107,7 @@ const login = async () => {
         <button
           onClick={handleGoogleLogin}
           disabled={loading}
-          className="flex w-full items-center justify-center gap-3 rounded-lg border px-4 py-3 hover:bg-gray-100 disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-3 rounded-full border px-4 py-3 hover:bg-gray-100 disabled:opacity-60"
         >
           <img
             src="https://www.svgrepo.com/show/475656/google-color.svg"

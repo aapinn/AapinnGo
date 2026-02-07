@@ -5,6 +5,7 @@ import { NavbarNav } from "./components/NavbarNav";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import Link from "next/link";
+import logo from "@/public/logo.jpg";
 
 export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null);
@@ -17,18 +18,17 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-linear-to-br from-slate-50 to-slate-100">
-      <NavbarNav />
+    <div className="min-h-screen w-full container items-center sm:flex-row p-5 mx-auto flex flex-col dark:bg-black dark:text-white">
+      <img src={logo.src} alt="Logo" className="w-24 sm:w-[50%]  sm:h-[50%] " />
+      <main className="flex flex-col flex-1 mx-4">
+        <h1 className="text-4xl md:text-3xl lg:text-5xl font-bold text-gray-800 font-sans my-4">
+            Happening now
+        </h1>
+        <h1 className="font-bold font-sans my-5 text-2xl text-gray-800">Join today.</h1>
 
-      <main className="flex flex-1 items-center justify-center px-4">
-        <div className="w-full max-w-sm bg-white rounded-3xl shadow-xl p-6 sm:p-8">
-          
-          {/* Title */}
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-800">
-              Welcome 👋
-            </h1>
-            <p className="text-sm text-gray-500 mt-2">
+        <div className="w-full max-w-sm item-center ">
+          <div className="text-center">
+            <p className="text-sm text-gray-500 my-5">
               Create or join a room to get started
             </p>
           </div>
@@ -37,7 +37,7 @@ export default function Dashboard() {
           <div className="flex flex-col gap-4">
             <Link
               href={user ? "/products" : "/login"}
-              className="w-full py-3 rounded-xl text-center font-semibold text-gray-900
+              className="w-full py-3 rounded-full text-center font-semibold text-gray-900
                          bg-amber-300 hover:bg-amber-400 active:scale-[0.98]
                          transition-all"
             >
@@ -46,7 +46,7 @@ export default function Dashboard() {
 
             <Link
               href="/join"
-              className="w-full py-3 rounded-xl text-center font-semibold text-white
+              className="w-full py-3 rounded-full text-center font-semibold text-white
                          bg-blue-500 hover:bg-blue-600 active:scale-[0.98]
                          transition-all"
             >

@@ -230,18 +230,18 @@ export default function ProductPage() {
       <div className="mx-auto container p-4 max-w-5xl">
         <header className="flex justify-between items-center my-6 border-b pb-4">
           <div>
-            <h1 className="text-2xl font-black uppercase italic tracking-tighter">Master Inventory</h1>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+            <h1 className="text-2xl font-sans">Master Inventory</h1>
+            <p className="text-[10px] text-slate-500 ">
               Admin: {getAdminData()?.uid?.substring(0, 8)}...
             </p>
           </div>
-          <div className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${roomActive ? 'bg-emerald-100 text-emerald-600 animate-pulse' : 'bg-slate-100 text-slate-400'}`}>
+          <div className={`px-4 py-2 rounded-full text-[10px]  transition-all ${roomActive ? 'bg-emerald-100 text-emerald-600 animate-pulse' : 'bg-slate-100 text-slate-400'}`}>
             {roomActive ? `● Live Room: ${currentRoomId}` : '○ Standby Mode'}
           </div>
         </header>
 
         <div className="mb-8 p-6 bg-slate-50 rounded-3xl border border-slate-100 shadow-sm">
-           <h2 className="text-xs font-bold uppercase mb-4 text-slate-400 tracking-widest">Tambah Produk Baru</h2>
+           <h2 className="text-xs mb-4 text-slate-400 ">Tambah Produk Baru</h2>
            <AddProductForm onAdd={addProduct} />
         </div>
 
@@ -249,7 +249,7 @@ export default function ProductPage() {
           {loading ? (
             <div className="col-span-full py-10 text-center">
                <span className="w-6 h-6 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin inline-block" />
-               <p className="text-[10px] font-bold uppercase mt-2 text-slate-400 tracking-widest">Loading Inventory...</p>
+               <p className="text-[10px] uppercase mt-2 text-slate-400 ">Loading Inventory...</p>
             </div>
           ) : products.length > 0 ? (
             products.map((product) => (
@@ -262,7 +262,7 @@ export default function ProductPage() {
             ))
           ) : (
             <div className="col-span-full py-10 text-center bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
-                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Inventory Kosong</p>
+                <p className="text-slate-400 text-xs ">Inventory Kosong</p>
             </div>
           )}
         </div>
@@ -270,8 +270,8 @@ export default function ProductPage() {
         <button
           onClick={handleRoomToggle}
           disabled={starting}
-          className={`w-full p-5 rounded-2xl mt-4 flex items-center justify-center gap-3 font-black uppercase tracking-widest text-xs transition-all active:scale-95 shadow-xl ${
-            roomActive ? "bg-rose-500 text-white" : "bg-emerald-400 text-black"
+          className={`w-full p-5 rounded-2xl mt-4 flex items-center font-semibold justify-center gap-3 text-sm transition-all active:scale-95 shadow-xl ${
+            roomActive ? "bg-rose-500 text-white" : "bg-emerald-400 text-white"
           } ${starting ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           {starting ? (

@@ -34,7 +34,7 @@ export default function AddProductForm({ onAdd }: { onAdd: (data: any) => void }
         value={variants}
         onChange={(e) => setVariants(e.target.value)} 
       />
-      <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-xl font-bold uppercase text-xs tracking-widest">
+      <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-xl text-sm ">
         Simpan ke Inventory
       </button>
     </form>
